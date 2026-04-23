@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -280,6 +280,13 @@
       transform: scale(1.12);
     }
 
+    .hero-slide.hero-slide-poster img,
+    .hero-slide.hero-slide-poster.active img {
+      object-position: center top;
+      transform: none;
+      transition: none;
+    }
+
     .hero-overlay {
       background: linear-gradient(to right, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.3) 100%), 
                   linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.6) 100%);
@@ -415,8 +422,13 @@
     section[id] { scroll-margin-top: 118px; }
 
     .fleet-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    .route-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-    .package-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); max-width: none; margin: 0 auto 3rem; }
+    .route-grid,
+    .package-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      align-items: stretch;
+    }
+
+    .package-grid { max-width: none; margin: 0 auto 3rem; }
     .package-price-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     .testimonial-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     .contact-grid { grid-template-columns: 0.92fr 1.08fr; align-items: stretch; }
@@ -427,6 +439,24 @@
     .fleet-image { position: relative; height: 240px; overflow: hidden; }
     .fleet-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease; }
     .fleet-card:hover .fleet-image img { transform: scale(1.06); }
+
+    .fleet-image.fleet-image-car {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.95rem;
+      background: linear-gradient(180deg, #fcfeff 0%, #eef4fb 100%);
+    }
+
+    .fleet-image.fleet-image-car img {
+      object-fit: contain;
+      object-position: center;
+      transform: none;
+    }
+
+    .fleet-card:hover .fleet-image.fleet-image-car img {
+      transform: none;
+    }
 
     .fleet-badge {
       position: absolute;
@@ -453,9 +483,10 @@
       position: relative;
       overflow: hidden;
       border-radius: 34px;
-      min-height: 290px;
+      min-height: 340px;
       margin: 0 auto;
       box-shadow: var(--shadow);
+      background: linear-gradient(180deg, #f7fbff 0%, #edf4ff 100%);
     }
 
     .photo-break img {
@@ -464,31 +495,42 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      z-index: 0;
     }
 
     .photo-break::after {
       content: "";
       position: absolute;
       inset: 0;
-      background: linear-gradient(180deg, rgba(26, 35, 31, 0.08) 0%, rgba(26, 35, 31, 0.03) 32%, rgba(26, 35, 31, 0.42) 100%);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .photo-break-subject {
+      position: absolute;
+      z-index: 2;
+      pointer-events: none;
+      border: 2px solid rgba(255, 210, 40, 0.72);
+      background: radial-gradient(circle at center, rgba(255, 210, 40, 0.08) 0%, rgba(255, 210, 40, 0.03) 56%, rgba(255, 210, 40, 0) 82%);
+      box-shadow: 0 0 0 8px rgba(255, 210, 40, 0.08), 0 0 30px rgba(255, 210, 40, 0.14);
     }
 
     .photo-break-copy {
       position: relative;
-      z-index: 1;
-      min-height: 290px;
+      z-index: 3;
+      min-height: 340px;
       display: grid;
-      place-items: end start;
-      padding: 1.5rem;
+      padding: 1.6rem;
     }
 
     .photo-break-copy div {
-      max-width: 520px;
-      padding: 1rem 1.15rem;
+      max-width: min(530px, 46%);
+      padding: 1.1rem 1.25rem;
       border-radius: 24px;
-      background: rgba(255, 255, 255, 0.72);
-      border: 1px solid rgba(255, 255, 255, 0.68);
-      backdrop-filter: blur(10px);
+      background: rgba(250, 249, 242, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.72);
+      box-shadow: 0 18px 40px rgba(15, 31, 72, 0.12);
+      backdrop-filter: blur(8px);
     }
 
     .photo-break-copy p {
@@ -501,68 +543,72 @@
     }
 
     .photo-break-copy h3 {
-      margin: 0.4rem 0 0;
+      margin: 0.45rem 0 0;
       font-family: "Montserrat", sans-serif;
-      font-size: clamp(1.4rem, 3vw, 2.4rem);
+      font-size: clamp(1.5rem, 3.1vw, 2.45rem);
       line-height: 1.15;
+      color: var(--primary-dark);
     }
 
-    .mini-scenic-strip {
-      position: relative;
-      overflow: hidden;
-      height: 36px;
-      border-radius: 0 0 24px 24px;
-      margin: -0.4rem auto 2.2rem;
-      box-shadow: 0 14px 32px rgba(31, 41, 55, 0.08);
+    .photo-break.photo-break-car img {
+      object-position: right center;
     }
 
-    .mini-scenic-strip img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      filter: blur(3px) saturate(0.95);
-      transform: scale(1.08);
+    .photo-break.photo-break-car::after {
+      background:
+        linear-gradient(90deg, rgba(242, 247, 255, 0.94) 0%, rgba(242, 247, 255, 0.78) 36%, rgba(242, 247, 255, 0.18) 56%, rgba(12, 31, 78, 0.16) 100%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.06) 0%, rgba(11, 30, 72, 0.12) 100%);
     }
+
+    .photo-break.photo-break-car .photo-break-copy {
+      place-items: center start;
+      padding: 1.9rem;
+    }
+
+    .photo-break.photo-break-car .photo-break-copy div {
+      max-width: min(520px, 50%);
+    }
+
+    .photo-break.photo-break-car .photo-break-subject { display: none; }
 
     .package-transition-wrap {
       padding-top: 0.75rem;
       padding-bottom: 1.2rem;
     }
 
-    .package-transition {
-      min-height: 320px;
-      border-radius: 36px;
+    .photo-break.photo-break-temple img {
+      object-position: left center;
     }
 
-    .package-transition::after {
-      background: linear-gradient(90deg, rgba(20, 28, 24, 0.08) 0%, rgba(20, 28, 24, 0.04) 36%, rgba(20, 28, 24, 0.16) 100%);
+    .photo-break.photo-break-temple::after {
+      background:
+        linear-gradient(90deg, rgba(9, 25, 62, 0.16) 0%, rgba(242, 247, 255, 0.2) 44%, rgba(242, 247, 255, 0.76) 68%, rgba(242, 247, 255, 0.94) 100%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, rgba(11, 30, 72, 0.1) 100%);
     }
 
-    .package-transition .photo-break-copy {
+    .photo-break.photo-break-temple .photo-break-copy {
       place-items: center end;
-      padding: 2rem;
+      padding: 1.9rem;
     }
 
-    .package-transition .photo-break-copy div {
-      max-width: 720px;
-      padding: 1.35rem 1.8rem;
+    .photo-break.photo-break-temple .photo-break-copy div {
+      max-width: min(560px, 52%);
       border-radius: 30px;
-      background: rgba(245, 245, 238, 0.82);
-      border: 1px solid rgba(255, 255, 255, 0.8);
-      box-shadow: 0 18px 42px rgba(31, 41, 55, 0.1);
+      padding: 1.25rem 1.45rem;
     }
 
-    .package-transition .photo-break-copy p {
+    .photo-break.photo-break-temple .photo-break-copy p {
       color: var(--primary);
-      letter-spacing: 0.26em;
+      letter-spacing: 0.24em;
     }
 
-    .package-transition .photo-break-copy h3 {
+    .photo-break.photo-break-temple .photo-break-copy h3 {
       font-family: Georgia, "Times New Roman", serif;
-      font-size: clamp(2.1rem, 4vw, 3.35rem);
-      color: var(--primary-dark);
-      line-height: 1.06;
+      font-size: clamp(2rem, 4vw, 3.05rem);
+      line-height: 1.08;
     }
+
+    .photo-break.photo-break-temple .photo-break-subject { display: none; }
 
     .packages .section-heading {
       margin-bottom: 2.8rem;
@@ -591,6 +637,33 @@
       font-size: 1.05rem;
     }
 
+    .package-category {
+      margin-bottom: 3.6rem;
+    }
+
+    .package-category:last-of-type {
+      margin-bottom: 0;
+    }
+
+    .package-category-heading {
+      max-width: 760px;
+      margin: 0 0 1.6rem;
+    }
+
+    .package-category-title {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(1.8rem, 3.4vw, 2.55rem);
+      line-height: 1.12;
+      color: var(--primary-dark);
+    }
+
+    .package-category-subtitle {
+      margin: 0.55rem 0 0;
+      color: #83756d;
+      font-size: 1rem;
+    }
+
     .routes {
       position: relative;
       overflow: hidden;
@@ -600,13 +673,56 @@
         linear-gradient(180deg, #f8fbff 0%, #eef4ff 100%);
     }
 
-    .route-card { position: relative; overflow: hidden; border-radius: 28px; padding: 0.8rem; }
-    .route-card::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(252, 251, 248, 0.42) 0%, rgba(246, 242, 234, 0.78) 100%); }
-    .route-top, .route-bottom { position: relative; z-index: 1; }
-    .route-top { position: relative; overflow: hidden; border-radius: 22px; box-shadow: 0 18px 35px rgba(31, 41, 55, 0.14); }
-    .route-top img { width: 100%; height: 220px; object-fit: cover; transition: transform 0.45s ease; }
-    .route-card:hover .route-top img { transform: scale(1.08); }
-    .route-top::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(20, 28, 24, 0.06) 0%, rgba(20, 28, 24, 0.64) 100%); }
+    .travel-card {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      padding: 0;
+      overflow: hidden;
+      border-radius: 22px;
+      background: #fff;
+      border: 1px solid rgba(31, 41, 55, 0.08);
+      box-shadow: 0 14px 32px rgba(31, 41, 55, 0.12);
+      backdrop-filter: none;
+    }
+
+    .travel-card-media {
+      position: relative;
+      width: 100%;
+      height: clamp(240px, 24vw, 300px);
+      aspect-ratio: 4 / 3;
+      overflow: hidden;
+      flex: 0 0 auto;
+      background: linear-gradient(180deg, #f7f9ff 0%, #eef4fb 100%);
+    }
+
+    .travel-card-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      transition: transform 0.45s ease;
+    }
+
+    .travel-card:hover .travel-card-media img {
+      transform: scale(1.06);
+    }
+
+    .travel-card-body {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      gap: 0.85rem;
+      padding: 1.35rem 1.3rem 1.45rem;
+    }
+
+    .route-media::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(20, 28, 24, 0.06) 0%, rgba(20, 28, 24, 0.64) 100%);
+    }
 
     .route-title {
       position: absolute;
@@ -622,6 +738,15 @@
       font-weight: 800;
     }
 
+    .route-title > div {
+      flex: 1;
+      min-width: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.12rem;
+      line-height: 1.2;
+      text-shadow: 0 10px 24px rgba(0, 0, 0, 0.28);
+    }
+
     .route-badge {
       padding: 0.38rem 0.75rem;
       border-radius: 999px;
@@ -632,13 +757,7 @@
       letter-spacing: 0.1em;
     }
 
-    .route-bottom {
-      margin-top: 1rem;
-      padding: 1rem;
-      border-radius: 20px;
-      background: rgba(255, 255, 255, 0.62);
-      border: 1px solid rgba(255, 255, 255, 0.75);
-    }
+    .route-body { justify-content: flex-start; }
 
     .route-meta {
       display: flex;
@@ -646,13 +765,14 @@
       gap: 0.85rem 1rem;
       color: var(--muted);
       font-size: 0.9rem;
-      margin-bottom: 0.8rem;
+      margin: 0;
     }
 
     .route-prices {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 0.55rem;
+      margin-top: auto;
     }
 
     .route-prices div {
@@ -671,29 +791,6 @@
         radial-gradient(circle at top left, rgba(255, 210, 40, 0.12), transparent 24%),
         linear-gradient(180deg, #ffffff 0%, #f7f9ff 100%);
     }
-    .package-card {
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      padding: 0;
-      border-radius: 22px;
-      background: #fff;
-      border: 1px solid rgba(31, 41, 55, 0.08);
-      box-shadow: 0 14px 32px rgba(31, 41, 55, 0.12);
-    }
-
-    .package-media {
-      position: relative;
-      height: 280px;
-      overflow: hidden;
-    }
-
-    .package-media img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
     .package-duration {
       position: absolute;
       left: 1rem;
@@ -707,13 +804,6 @@
       color: #fff;
       font-size: 0.88rem;
       font-weight: 800;
-    }
-
-    .package-body {
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-      padding: 1.35rem 1.3rem 1.45rem;
     }
 
     .package-card h3 {
@@ -738,6 +828,11 @@
       list-style: none;
       color: #6b6b6b;
       font-size: 0.9rem;
+    }
+
+    .feature-list:empty {
+      display: none;
+      margin: 0;
     }
 
     .feature-list li {
@@ -935,7 +1030,7 @@
     @media (max-width: 1120px) {
       .hero-grid, .contact-grid, .footer-inner { grid-template-columns: 1fr; }
       .fleet-grid, .testimonial-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .route-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .route-grid,
       .package-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
       .package-price-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
@@ -945,6 +1040,7 @@
       .nav, .header-actions { justify-content: center; }
       .hero { min-height: 86svh; }
       .form-grid { grid-template-columns: 1fr; }
+      .route-grid,
       .package-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .route-prices { grid-template-columns: 1fr; }
     }
@@ -959,12 +1055,26 @@
       .hero-copy h1 { font-size: clamp(3rem, 16vw, 4.8rem); }
       .hero-dots { right: 1rem; bottom: 1rem; }
       .fleet-grid, .route-grid, .testimonial-grid, .package-price-grid, .package-grid { grid-template-columns: 1fr; }
-      .photo-break, .photo-break-copy { min-height: 240px; }
-      .mini-scenic-strip { height: 24px; margin-bottom: 1.3rem; }
-      .package-transition { min-height: 250px; }
-      .package-transition .photo-break-copy { place-items: end center; padding: 1rem; }
-      .package-transition .photo-break-copy div { padding: 1rem 1.1rem; border-radius: 22px; }
-      .package-transition .photo-break-copy h3 { font-size: clamp(1.6rem, 8vw, 2.4rem); }
+      .photo-break,
+      .photo-break-copy { min-height: 320px; }
+      .photo-break.photo-break-car,
+      .photo-break.photo-break-temple { min-height: 360px; }
+      .photo-break.photo-break-car img { object-position: 68% center; }
+      .photo-break.photo-break-temple img { object-position: 32% center; }
+      .photo-break.photo-break-car .photo-break-copy,
+      .photo-break.photo-break-temple .photo-break-copy {
+        place-items: end center;
+        padding: 1rem;
+      }
+      .photo-break.photo-break-car .photo-break-copy div,
+      .photo-break.photo-break-temple .photo-break-copy div {
+        max-width: 100%;
+      }
+      .photo-break.photo-break-car .photo-break-subject,
+      .photo-break.photo-break-temple .photo-break-subject { display: none; }
+      .photo-break.photo-break-temple .photo-break-copy div { padding: 1rem 1.1rem; border-radius: 22px; }
+      .photo-break.photo-break-temple .photo-break-copy h3 { font-size: clamp(1.6rem, 8vw, 2.4rem); }
+      .travel-card-media { height: 260px; }
       section { padding: 4rem 0; }
       .site-footer { padding-bottom: 5rem; }
     }
@@ -998,7 +1108,7 @@
   <main id="top">
     <section class="hero">
       <div class="hero-slides" aria-hidden="true">
-        <div class="hero-slide active"><img src="assets/hero-fleet.jpg" alt="Professional travel fleet - Bus and Tempo Traveller on highway"></div>
+        <div class="hero-slide hero-slide-poster active"><img src="assets/hero-kakinada-fleet.jpeg" alt="Srinivasa Car Travels hero poster featuring Dzire, Ertiga, and Innova Crysta in Kakinada"></div>
         <div class="hero-slide"><img src="assets/hero-2.jpg" alt="Coastal road trip"></div>
         <div class="hero-slide"><img src="assets/hero-3.jpg" alt="Hill station road trip"></div>
         <div class="hero-slide"><img src="assets/hero-4.jpg" alt="Temple entrance road"></div>
@@ -1037,8 +1147,8 @@
         </div>
         <div class="fleet-grid">
           <article class="fleet-card card reveal">
-            <div class="fleet-image">
-              <img src="assets/car-1.jpeg" alt="White sedan taxi from Srinivasa Car Travels">
+            <div class="fleet-image fleet-image-car">
+              <img src="assets/fleet-dzire.jpeg" alt="Maruti Suzuki Dzire sedan from Srinivasa Car Travels">
               <span class="fleet-badge">Sedan</span>
             </div>
             <div class="fleet-copy">
@@ -1047,8 +1157,8 @@
             </div>
           </article>
           <article class="fleet-card card reveal">
-            <div class="fleet-image">
-              <img src="assets/car-2.jpeg" alt="White Ertiga from Srinivasa Car Travels">
+            <div class="fleet-image fleet-image-car">
+              <img src="assets/fleet-ertiga.jpeg" alt="Maruti Suzuki Ertiga from Srinivasa Car Travels">
               <span class="fleet-badge">Ertiga</span>
             </div>
             <div class="fleet-copy">
@@ -1057,8 +1167,8 @@
             </div>
           </article>
           <article class="fleet-card card reveal">
-            <div class="fleet-image">
-              <img src="assets/car-3.jpeg" alt="White taxi vehicle from Srinivasa Car Travels">
+            <div class="fleet-image fleet-image-car">
+              <img src="assets/fleet-innova-crysta.jpeg" alt="Toyota Innova Crysta taxi vehicle from Srinivasa Car Travels">
               <span class="fleet-badge">Taxi service</span>
             </div>
             <div class="fleet-copy">
@@ -1067,8 +1177,8 @@
             </div>
           </article>
           <article class="fleet-card card reveal">
-            <div class="fleet-image">
-              <img src="assets/car-4.jpeg" alt="Decorated car for event travel">
+            <div class="fleet-image fleet-image-car">
+              <img src="assets/fleet-innova-crysta.jpeg" alt="Toyota Innova Crysta for special event travel">
               <span class="fleet-badge">Special events</span>
             </div>
             <div class="fleet-copy">
@@ -1079,7 +1189,7 @@
           <!-- NEW: Tempo Traveller -->
           <article class="fleet-card card reveal">
             <div class="fleet-image">
-              <img src="assets/tempo-traveller.jpg" alt="Force Tempo Traveller service">
+              <img src="assets/tempo-traveller-new.png" alt="Full-view white Tempo Traveller van for group travel">
               <span class="fleet-badge">12-24 Seater</span>
             </div>
             <div class="fleet-copy">
@@ -1090,7 +1200,7 @@
           <!-- NEW: Bus -->
           <article class="fleet-card card reveal">
             <div class="fleet-image">
-              <img src="assets/bus.jpg" alt="Luxury Tourist Bus service">
+              <img src="assets/bus-new.png" alt="Professional white mini luxury bus for large-group travel">
               <span class="fleet-badge">Large Group</span>
             </div>
             <div class="fleet-copy">
@@ -1103,12 +1213,13 @@
     </section>
 
     <section class="shell">
-      <div class="photo-break">
-        <img src="assets/car-5.jpeg" alt="Srinivasa Car Travels highway-ready sedan">
+      <div class="photo-break photo-break-car">
+        <img src="assets/banner-car-travel-wide.jpg" alt="Modern white sedan on scenic highway for Srinivasa Car Travels">
+        <span class="photo-break-subject" aria-hidden="true"></span>
         <div class="photo-break-copy">
           <div>
-            <p>Scenic travel</p>
-            <h3>From airport drops to long outstation routes, every trip starts with a dependable vehicle.</h3>
+            <p>SCENIC CAR TRAVEL</p>
+            <h3>Reliable car travel for airport drops and long outstation trips.</h3>
           </div>
         </div>
       </div>
@@ -1122,26 +1233,12 @@
           <p>Outstation, scenic, airport, and temple routes from Kakinada — all with transparent fares.</p>
         </div>
         <div class="route-grid">
-          <article class="route-card card reveal">
-            <div class="route-top">
-              <img src="assets/rajahmundry.jpg" alt="Kakinada to Rajahmundry route - Godavari Bridge view">
-              <div class="route-title"><div>Kakinada to Rajahmundry</div><span class="route-badge">Popular</span></div>
-            </div>
-            <div class="route-bottom">
-              <div class="route-meta"><span>Approx. 65 km</span><span>About 1.5 hrs</span></div>
-              <div class="route-prices">
-                <div><span>Sedan</span><strong>Rs.1600</strong></div>
-                <div><span>Ertiga</span><strong>Rs.2200</strong></div>
-                <div><span>Innova Crysta</span><strong>Rs.3500</strong></div>
-              </div>
-            </div>
-          </article>
-          <article class="route-card card reveal">
-            <div class="route-top">
+          <article class="route-card travel-card card reveal">
+            <div class="route-media travel-card-media">
               <img src="assets/car-4.jpeg" alt="Kakinada to Vizag Airport route card">
               <div class="route-title"><div>Kakinada to Vizag Airport</div><span class="route-badge">Airport</span></div>
             </div>
-            <div class="route-bottom">
+            <div class="route-body travel-card-body">
               <div class="route-meta"><span>Approx. 160 km</span><span>About 3.5 hrs</span></div>
               <div class="route-prices">
                 <div><span>Sedan</span><strong>Rs.3300</strong></div>
@@ -1150,12 +1247,12 @@
               </div>
             </div>
           </article>
-          <article class="route-card card reveal">
-            <div class="route-top">
+          <article class="route-card travel-card card reveal">
+            <div class="route-media travel-card-media">
               <img src="assets/car-1.jpeg" alt="Kakinada to Vijayawada route card">
               <div class="route-title"><div>Kakinada to Vijayawada</div><span class="route-badge">City route</span></div>
             </div>
-            <div class="route-bottom">
+            <div class="route-body travel-card-body">
               <div class="route-meta"><span>Approx. 220 km</span><span>About 4.5 hrs</span></div>
               <div class="route-prices">
                 <div><span>Sedan</span><strong>Rs.4000</strong></div>
@@ -1164,12 +1261,12 @@
               </div>
             </div>
           </article>
-          <article class="route-card card reveal">
-            <div class="route-top">
+          <article class="route-card travel-card card reveal">
+            <div class="route-media travel-card-media">
               <img src="assets/car-5.jpeg" alt="Kakinada to Hyderabad route card">
               <div class="route-title"><div>Kakinada to Hyderabad</div><span class="route-badge">Long route</span></div>
             </div>
-            <div class="route-bottom">
+            <div class="route-body travel-card-body">
               <div class="route-meta"><span>Approx. 500 km</span><span>8 hrs</span></div>
               <div class="route-prices">
                 <div><span>Sedan</span><strong>Rs.10000</strong></div>
@@ -1178,12 +1275,12 @@
               </div>
             </div>
           </article>
-          <article class="route-card card reveal">
-            <div class="route-top">
+          <article class="route-card travel-card card reveal">
+            <div class="route-media travel-card-media">
               <img src="assets/car-3.jpeg" alt="Kakinada to Pancharamalu route card">
               <div class="route-title"><div>Kakinada to Pancharamalu</div><span class="route-badge">Temple</span></div>
             </div>
-            <div class="route-bottom">
+            <div class="route-body travel-card-body">
               <div class="route-meta"><span>One day package</span><span>Temple travel</span></div>
               <div class="route-prices">
                 <div><span>Sedan</span><strong>Rs.10000</strong></div>
@@ -1192,12 +1289,12 @@
               </div>
             </div>
           </article>
-          <article class="route-card card reveal">
-            <div class="route-top">
+          <article class="route-card travel-card card reveal">
+            <div class="route-media travel-card-media">
               <img src="assets/car-2.jpeg" alt="Kakinada to Dwaraka Tirumala route card">
               <div class="route-title"><div>Kakinada to Dwaraka Tirumala</div><span class="route-badge">Round trip</span></div>
             </div>
-            <div class="route-bottom">
+            <div class="route-body travel-card-body">
               <div class="route-meta"><span>Temple round trip</span><span>Family travel</span></div>
               <div class="route-prices">
                 <div><span>Sedan</span><strong>Rs.5000</strong></div>
@@ -1206,12 +1303,12 @@
               </div>
             </div>
           </article>
-          <article class="route-card card reveal">
-            <div class="route-top">
+          <article class="route-card travel-card card reveal">
+            <div class="route-media travel-card-media">
               <img src="assets/araku.jpg" alt="Kakinada to Araku Valley route - Scenic hill view">
               <div class="route-title"><div>Kakinada to Araku Valley</div><span class="route-badge">Scenic</span></div>
             </div>
-            <div class="route-bottom">
+            <div class="route-body travel-card-body">
               <div class="route-meta"><span>Approx. 320 km</span><span>Scenic hill route</span></div>
               <div class="route-prices">
                 <div><span>Sedan</span><strong>Rs.6500</strong></div>
@@ -1220,12 +1317,12 @@
               </div>
             </div>
           </article>
-          <article class="route-card card reveal">
-            <div class="route-top">
+          <article class="route-card travel-card card reveal">
+            <div class="route-media travel-card-media">
               <img src="assets/lambasingi.jpg" alt="Kakinada to Lambasingi and Vanjangi route - Foggy hills">
               <div class="route-title"><div>Kakinada to Lambasingi &amp; Vanjangi</div><span class="route-badge">Hill station</span></div>
             </div>
-            <div class="route-bottom">
+            <div class="route-body travel-card-body">
               <div class="route-meta"><span>Fog &amp; valley views</span><span>Best Sep–Jan</span></div>
               <div class="route-prices">
                 <div><span>Sedan</span><strong>Rs.7000</strong></div>
@@ -1241,15 +1338,13 @@
     </section>
 
     <section class="shell package-transition-wrap">
-      <div class="mini-scenic-strip">
-        <img src="assets/charminar.jpg" alt="Charminar transition strip">
-      </div>
-      <div class="photo-break package-transition">
-        <img src="assets/tirumala-temple.jpg" alt="Temple travel transition banner">
+      <div class="photo-break photo-break-temple">
+        <img src="assets/banner-temple-travel-wide.jpg" alt="Scenic Indian temple travel banner for pilgrimage packages">
+        <span class="photo-break-subject" aria-hidden="true"></span>
         <div class="photo-break-copy">
           <div>
-            <p>PACKAGE TRANSITION</p>
-            <h3>Move from scenic routes into travel packages.</h3>
+            <p>SCENIC TEMPLE TRAVEL</p>
+            <h3>Peaceful scenic routes for comfortable pilgrimage travel packages.</h3>
           </div>
         </div>
       </div>
@@ -1258,297 +1353,296 @@
     <section id="packages" class="packages">
       <div class="shell">
         <div class="section-heading">
-          <h2 class="packages-heading">Devotional Tour <span>Packages</span></h2>
-          <p class="packages-subtitle">Temple trips and special travel packages from Kakinada</p>
+          <h2 class="packages-heading">Travel <span>Packages</span></h2>
+          <p class="packages-subtitle">Carefully organized tour and travel packages from Kakinada</p>
         </div>
-        <div class="package-grid">
-          <article class="package-card card reveal">
-            <div class="package-media">
-              <img src="assets/pancharamalu.jpg" alt="Pancharamalu temple tour package">
-              <span class="package-duration">1 Day</span>
-            </div>
-            <div class="package-body">
-              <h3>Pancharamalu Tour Package</h3>
-              <p class="package-location">Temple Tour from Kakinada</p>
-              <ul class="feature-list">
-                <li>Sedan: Rs.10000</li>
-                <li>Ertiga: Rs.12000</li>
-                <li>Innova Crysta: Rs.15000</li>
-              </ul>
-              <a class="btn package-book" href="https://wa.me/916304681176?text=Hello%20Srinivasa%20Car%20Travels%2C%20I%20want%20to%20book%20Pancharamalu%20tour." target="_blank" rel="noopener">Book</a>
-            </div>
-          </article>
-          <article class="package-card card reveal">
-            <div class="package-media">
-              <img src="assets/dwaraka-tirumala.jpg" alt="Dwaraka Tirumala temple package">
-              <span class="package-duration">Round Trip</span>
-            </div>
-            <div class="package-body">
-              <h3>Dwaraka Tirumala Package</h3>
-              <p class="package-location">Dwaraka Tirumala, Andhra Pradesh</p>
-              <ul class="feature-list">
-                <li>Sedan: Rs.5000</li>
-                <li>Ertiga: Rs.6000</li>
-                <li>Innova Crysta: Rs.8000</li>
-              </ul>
-              <a class="btn package-book" href="https://wa.me/916304681176?text=Hello%20Srinivasa%20Car%20Travels%2C%20I%20want%20to%20book%20Dwaraka%20Tirumala%20round%20trip." target="_blank" rel="noopener">Book</a>
-            </div>
-          </article>
-          <article class="package-card card reveal">
-            <div class="package-media">
-              <img src="assets/charminar.jpg" alt="Kakinada to Hyderabad route with Charminar visual">
-              <span class="package-duration">Pickup & Drop</span>
-            </div>
-            <div class="package-body">
-              <h3>Kakinada to Hyderabad</h3>
-              <p class="package-location">Hyderabad, Telangana</p>
-              <ul class="feature-list">
-                <li>Sedan: Rs.10000</li>
-                <li>Ertiga: Rs.12000</li>
-                <li>Innova Crysta: Rs.16000</li>
-              </ul>
-              <a class="btn package-book" href="https://wa.me/916304681176?text=Hello%20Srinivasa%20Car%20Travels%2C%20I%20want%20to%20book%20Kakinada%20to%20Hyderabad." target="_blank" rel="noopener">Book</a>
-            </div>
-          </article>
-          <article class="package-card card reveal">
-            <div class="package-media">
-              <img src="assets/rajahmundry.jpg" alt="Kakinada to Rajahmundry package - Godavari visual">
-              <span class="package-duration">Pickup & Drop</span>
-            </div>
-            <div class="package-body">
-              <h3>Kakinada to Rajahmundry</h3>
-              <p class="package-location">Rajahmundry, Andhra Pradesh</p>
-              <ul class="feature-list">
-                <li>Sedan: Rs.1500</li>
-                <li>Ertiga: Rs.2200</li>
-                <li>Innova Crysta: Rs.3500</li>
-              </ul>
-              <a class="btn package-book" href="https://wa.me/916304681176?text=Hello%20Srinivasa%20Car%20Travels%2C%20I%20want%20to%20book%20Kakinada%20to%20Rajahmundry." target="_blank" rel="noopener">Book</a>
-            </div>
-          </article>
-          <article class="package-card card reveal">
-            <div class="package-media">
-              <img src="assets/tirumala-temple.jpg" alt="Tirupati Balaji Darshan package">
-              <span class="package-duration">2 Days / 1 Night</span>
-            </div>
-            <div class="package-body">
-              <h3>Tirupati Balaji Darshan</h3>
-              <p class="package-location">Tirumala, Andhra Pradesh</p>
-              <ul class="feature-list">
-                <li>VIP Darshan assistance</li>
-                <li>Comfortable AC travel</li>
-                <li>Hotel accommodation support</li>
-              </ul>
-              <a class="btn package-book" href="https://wa.me/916304681176?text=Hello%20Srinivasa%20Car%20Travels%2C%20I%20want%20to%20book%20Tirupati%20Balaji%20Darshan%20package." target="_blank" rel="noopener">Book</a>
-            </div>
-          </article>
-          <article class="package-card card reveal">
-            <div class="package-media">
-              <img src="assets/srisailam-temple.jpg" alt="Srisailam Mallikarjuna package">
-              <span class="package-duration">2 Days / 1 Night</span>
-            </div>
-            <div class="package-body">
-              <h3>Srisailam Mallikarjuna</h3>
-              <p class="package-location">Srisailam, Andhra Pradesh</p>
-              <ul class="feature-list">
-                <li>Jyotirlinga Darshan</li>
-                <li>Patala Ganga visit</li>
-                <li>Scenic Nallamala Hills</li>
-              </ul>
-              <a class="btn package-book" href="https://wa.me/916304681176?text=Hello%20Srinivasa%20Car%20Travels%2C%20I%20want%20to%20book%20Srisailam%20Mallikarjuna%20package." target="_blank" rel="noopener">Book</a>
-            </div>
-          </article>
-          <article class="package-card card reveal">
-            <div class="package-media">
-              <img src="assets/mantralayam-temple.jpg" alt="Mantralayam Raghavendra package">
-              <span class="package-duration">1 Day</span>
-            </div>
-            <div class="package-body">
-              <h3>Mantralayam Raghavendra</h3>
-              <p class="package-location">Mantralayam, Andhra Pradesh</p>
-              <ul class="feature-list">
-                <li>Sri Raghavendra Swamy Darshan</li>
-                <li>Tungabhadra river visit</li>
-                <li>Same-day return option</li>
-              </ul>
-              <a class="btn package-book" href="https://wa.me/916304681176?text=Hello%20Srinivasa%20Car%20Travels%2C%20I%20want%20to%20book%20Mantralayam%20Raghavendra%20package." target="_blank" rel="noopener">Book</a>
-            </div>
-          </article>
-          <article class="package-card card reveal">
-            <div class="package-media">
-              <img src="assets/hampi-virupaksha.jpg" alt="Hampi and Virupaksha Temple package">
-              <span class="package-duration">2 Days / 1 Night</span>
-            </div>
-            <div class="package-body">
-              <h3>Hampi &amp; Virupaksha Temple</h3>
-              <p class="package-location">Hampi, Karnataka</p>
-              <ul class="feature-list">
-                <li>UNESCO heritage temple visit</li>
-                <li>Virupaksha Temple Darshan</li>
-                <li>Historic ruins sightseeing</li>
-              </ul>
-              <a class="btn package-book" href="https://wa.me/916304681176?text=Hello%20Srinivasa%20Car%20Travels%2C%20I%20want%20to%20book%20Hampi%20and%20Virupaksha%20Temple%20package." target="_blank" rel="noopener">Book</a>
-            </div>
-          </article>
-          <article class="package-card card reveal">
-            <div class="package-media">
-              <img src="assets/ahobilam-temple.jpg" alt="Ahobilam Narasimha Swamy package">
-              <span class="package-duration">2 Days / 1 Night</span>
-            </div>
-            <div class="package-body">
-              <h3>Ahobilam Narasimha Swamy</h3>
-              <p class="package-location">Ahobilam, Andhra Pradesh</p>
-              <ul class="feature-list">
-                <li>Narasimha Swamy temple circuit</li>
-                <li>Hill temple sightseeing</li>
-                <li>Comfortable family package</li>
-              </ul>
-              <a class="btn package-book" href="https://wa.me/916304681176?text=Hello%20Srinivasa%20Car%20Travels%2C%20I%20want%20to%20book%20Ahobilam%20package." target="_blank" rel="noopener">Book</a>
-            </div>
-          </article>
-          <article class="package-card card reveal">
-            <div class="package-media">
-              <img src="assets/lepakshi-temple.jpg" alt="Lepakshi temple package">
-              <span class="package-duration">1 Day</span>
-            </div>
-            <div class="package-body">
-              <h3>Lepakshi Temple Package</h3>
-              <p class="package-location">Lepakshi, Andhra Pradesh</p>
-              <ul class="feature-list">
-                <li>Veerabhadra Swamy Temple visit</li>
-                <li>Famous Nandi sightseeing</li>
-                <li>Ideal for family day trip</li>
-              </ul>
-              <a class="btn package-book" href="https://wa.me/916304681176?text=Hello%20Srinivasa%20Car%20Travels%2C%20I%20want%20to%20book%20Lepakshi%20Temple%20package." target="_blank" rel="noopener">Book</a>
-            </div>
-          </article>
-          <article class="package-card card reveal">
-            <div class="package-media">
-              <img src="assets/yaganti-temple.jpg" alt="Yaganti temple package">
-              <span class="package-duration">1 Day</span>
-            </div>
-            <div class="package-body">
-              <h3>Yaganti Temple Package</h3>
-              <p class="package-location">Yaganti, Andhra Pradesh</p>
-              <ul class="feature-list">
-                <li>Yaganti Uma Maheshwara Darshan</li>
-                <li>Cave temple sightseeing</li>
-                <li>Popular devotional route</li>
-              </ul>
-              <a class="btn package-book" href="https://wa.me/916304681176?text=Hello%20Srinivasa%20Car%20Travels%2C%20I%20want%20to%20book%20Yaganti%20Temple%20package." target="_blank" rel="noopener">Book</a>
-            </div>
-          </article>
-          <article class="package-card card reveal">
-            <div class="package-media">
-              <img src="assets/annavaram-temple.jpg" alt="Annavaram Satyanarayana Swamy Temple">
-              <span class="package-duration">1 Day</span>
-            </div>
-            <div class="package-body">
-              <h3>Annavaram Temple Package</h3>
-              <p class="package-location">Annavaram, Andhra Pradesh</p>
-              <ul class="feature-list">
-                <li>Sri Satyanarayana Swamy Darshan</li>
-                <li>Quick devotional trip from Kakinada</li>
-                <li>Suitable for same-day booking</li>
-              </ul>
-              <a class="btn package-book" href="https://wa.me/916304681176?text=Hello%20Srinivasa%20Car%20Travels%2C%20I%20want%20to%20book%20Annavaram%20Temple%20package." target="_blank" rel="noopener">Book</a>
-            </div>
-          </article>
 
-          <!-- NEW: Araku Valley -->
-          <article class="package-card card reveal">
-            <div class="package-media">
-              <img src="assets/araku.jpg" alt="Kakinada to Araku Valley package scenic view">
-              <span class="package-duration">1–2 Days</span>
-            </div>
-            <div class="package-body">
-              <h3>Kakinada to Araku Valley</h3>
-              <p class="package-location">Araku, Andhra Pradesh</p>
-              <ul class="feature-list">
-                <li>Scenic tribal hill-station getaway</li>
-                <li>Borra Caves &amp; coffee plantation visit</li>
-                <li>Sedan: Rs.6500 | Ertiga: Rs.8000</li>
-                <li>Innova Crysta: Rs.11000</li>
-              </ul>
-              <a class="btn package-book" href="https://wa.me/916304681176?text=Hello%20Srinivasa%20Car%20Travels%2C%20I%20want%20to%20book%20Araku%20Valley%20package." target="_blank" rel="noopener">Book</a>
-            </div>
-          </article>
+        <div class="package-category">
+          <div class="package-category-heading">
+            <h3 class="package-category-title">Devotional Tour Packages</h3>
+            <p class="package-category-subtitle">Temple trips, darshan packages, and spiritual journeys</p>
+          </div>
+          <div class="package-grid">
+            <article class="package-card travel-card card reveal package-card-poster">
+              <div class="package-media package-media-poster travel-card-media">
+                <img src="assets/pancharamalu-poster.jpeg" alt="Pancharamalu devotional tour package poster from Srinivasa Car Travels">
+                <span class="package-duration">1 Day</span>
+              </div>
+              <div class="package-body travel-card-body">
+                <h3>Pancharamalu Tour Package</h3>
+                <p class="package-location">Temple Tour from Kakinada</p>
+                <ul class="feature-list">
+                  <li>Sedan: Rs.10000</li>
+                  <li>Ertiga: Rs.12000</li>
+                  <li>Innova Crysta: Rs.15000</li>
+                </ul>
+                <a class="btn package-book" href="https://wa.me/916304681176?text=Hello%20Srinivasa%20Car%20Travels%2C%20I%20want%20to%20book%20Pancharamalu%20tour." target="_blank" rel="noopener">Book</a>
+              </div>
+            </article>
+            <article class="package-card travel-card card reveal">
+              <div class="package-media travel-card-media">
+                <img src="assets/dwaraka-tirumala.jpg" alt="Dwaraka Tirumala temple package">
+                <span class="package-duration">Round Trip</span>
+              </div>
+              <div class="package-body travel-card-body">
+                <h3>Dwaraka Tirumala Package</h3>
+                <p class="package-location">Dwaraka Tirumala, Andhra Pradesh</p>
+                <ul class="feature-list">
+                  <li>Sedan: Rs.5000</li>
+                  <li>Ertiga: Rs.6000</li>
+                  <li>Innova Crysta: Rs.8000</li>
+                </ul>
+                <a class="btn package-book" href="https://wa.me/916304681176?text=Hello%20Srinivasa%20Car%20Travels%2C%20I%20want%20to%20book%20Dwaraka%20Tirumala%20round%20trip." target="_blank" rel="noopener">Book</a>
+              </div>
+            </article>
+            <article class="package-card travel-card card reveal">
+              <div class="package-media travel-card-media">
+                <img src="assets/tirumala-temple.jpg" alt="Tirupati Balaji Darshan package">
+                <span class="package-duration">2 Days / 1 Night</span>
+              </div>
+              <div class="package-body travel-card-body">
+                <h3>Tirupati Balaji Darshan</h3>
+                <p class="package-location">Tirumala, Andhra Pradesh</p>
+                <ul class="feature-list">
+                </ul>
+                <a class="btn package-book" href="https://wa.me/916304681176?text=Hello%20Srinivasa%20Car%20Travels%2C%20I%20want%20to%20book%20Tirupati%20Balaji%20Darshan%20package." target="_blank" rel="noopener">Book</a>
+              </div>
+            </article>
+            <article class="package-card travel-card card reveal">
+              <div class="package-media travel-card-media">
+                <img src="assets/srisailam-temple.jpg" alt="Srisailam Mallikarjuna package">
+                <span class="package-duration">2 Days / 1 Night</span>
+              </div>
+              <div class="package-body travel-card-body">
+                <h3>Srisailam Mallikarjuna</h3>
+                <p class="package-location">Srisailam, Andhra Pradesh</p>
+                <ul class="feature-list">
+                  <li>Jyotirlinga Darshan</li>
+                  <li>Patala Ganga visit</li>
+                  <li>Scenic Nallamala Hills</li>
+                </ul>
+                <a class="btn package-book" href="https://wa.me/916304681176?text=Hello%20Srinivasa%20Car%20Travels%2C%20I%20want%20to%20book%20Srisailam%20Mallikarjuna%20package." target="_blank" rel="noopener">Book</a>
+              </div>
+            </article>
+            <article class="package-card travel-card card reveal">
+              <div class="package-media travel-card-media">
+                <img src="assets/mantralayam-temple.jpg" alt="Mantralayam Raghavendra package">
+                <span class="package-duration">1 Day</span>
+              </div>
+              <div class="package-body travel-card-body">
+                <h3>Mantralayam Raghavendra</h3>
+                <p class="package-location">Mantralayam, Andhra Pradesh</p>
+                <ul class="feature-list">
+                  <li>Sri Raghavendra Swamy Darshan</li>
+                  <li>Tungabhadra river visit</li>
+                  <li>Same-day return option</li>
+                </ul>
+                <a class="btn package-book" href="https://wa.me/916304681176?text=Hello%20Srinivasa%20Car%20Travels%2C%20I%20want%20to%20book%20Mantralayam%20Raghavendra%20package." target="_blank" rel="noopener">Book</a>
+              </div>
+            </article>
+            <article class="package-card travel-card card reveal">
+              <div class="package-media travel-card-media">
+                <img src="assets/ahobilam-temple.jpg" alt="Ahobilam Narasimha Swamy package">
+                <span class="package-duration">2 Days / 1 Night</span>
+              </div>
+              <div class="package-body travel-card-body">
+                <h3>Ahobilam Narasimha Swamy</h3>
+                <p class="package-location">Ahobilam, Andhra Pradesh</p>
+                <ul class="feature-list">
+                  <li>Narasimha Swamy temple circuit</li>
+                  <li>Hill temple sightseeing</li>
+                  <li>Comfortable family package</li>
+                </ul>
+                <a class="btn package-book" href="https://wa.me/916304681176?text=Hello%20Srinivasa%20Car%20Travels%2C%20I%20want%20to%20book%20Ahobilam%20package." target="_blank" rel="noopener">Book</a>
+              </div>
+            </article>
+            <article class="package-card travel-card card reveal">
+              <div class="package-media travel-card-media">
+                <img src="assets/lepakshi-temple.jpg" alt="Lepakshi temple package">
+                <span class="package-duration">1 Day</span>
+              </div>
+              <div class="package-body travel-card-body">
+                <h3>Lepakshi Temple Package</h3>
+                <p class="package-location">Lepakshi, Andhra Pradesh</p>
+                <ul class="feature-list">
+                  <li>Veerabhadra Swamy Temple visit</li>
+                  <li>Famous Nandi sightseeing</li>
+                  <li>Ideal for family day trip</li>
+                </ul>
+                <a class="btn package-book" href="https://wa.me/916304681176?text=Hello%20Srinivasa%20Car%20Travels%2C%20I%20want%20to%20book%20Lepakshi%20Temple%20package." target="_blank" rel="noopener">Book</a>
+              </div>
+            </article>
+            <article class="package-card travel-card card reveal">
+              <div class="package-media travel-card-media">
+                <img src="assets/yaganti-temple.jpg" alt="Yaganti temple package">
+                <span class="package-duration">1 Day</span>
+              </div>
+              <div class="package-body travel-card-body">
+                <h3>Yaganti Temple Package</h3>
+                <p class="package-location">Yaganti, Andhra Pradesh</p>
+                <ul class="feature-list">
+                  <li>Yaganti Uma Maheshwara Darshan</li>
+                  <li>Cave temple sightseeing</li>
+                  <li>Popular devotional route</li>
+                </ul>
+                <a class="btn package-book" href="https://wa.me/916304681176?text=Hello%20Srinivasa%20Car%20Travels%2C%20I%20want%20to%20book%20Yaganti%20Temple%20package." target="_blank" rel="noopener">Book</a>
+              </div>
+            </article>
+            <article class="package-card travel-card card reveal">
+              <div class="package-media travel-card-media">
+                <img src="assets/annavaram-temple.jpg" alt="Annavaram Satyanarayana Swamy Temple">
+                <span class="package-duration">1 Day</span>
+              </div>
+              <div class="package-body travel-card-body">
+                <h3>Annavaram Temple Package</h3>
+                <p class="package-location">Annavaram, Andhra Pradesh</p>
+                <ul class="feature-list">
+                  <li>Sri Satyanarayana Swamy Darshan</li>
+                  <li>Quick devotional trip from Kakinada</li>
+                  <li>Suitable for same-day booking</li>
+                </ul>
+                <a class="btn package-book" href="https://wa.me/916304681176?text=Hello%20Srinivasa%20Car%20Travels%2C%20I%20want%20to%20book%20Annavaram%20Temple%20package." target="_blank" rel="noopener">Book</a>
+              </div>
+            </article>
+            <article class="package-card travel-card card reveal">
+              <div class="package-media travel-card-media">
+                <img src="assets/draksharamam.jpg" alt="Kakinada local temples Trip 1 - Draksharamam Temple">
+                <span class="package-duration">Local Tour · Trip 1</span>
+              </div>
+              <div class="package-body travel-card-body">
+                <h3>Kakinada Local Temples – Trip 1</h3>
+                <p class="package-location">Pitampura · Samalkot · Draksharamam · Kotipalli</p>
+                <ul class="feature-list">
+                  <li>Pitampura Temple darshan</li>
+                  <li>Samalkot Sri Bhimeswara Swamy Temple</li>
+                  <li>Draksharamam Bhimeswara Temple</li>
+                  <li>Kotipalli Gautami Ghat &amp; Temple</li>
+                </ul>
+                <a class="btn package-book" href="https://wa.me/916304681176?text=Hello%20Srinivasa%20Car%20Travels%2C%20I%20want%20to%20book%20Kakinada%20Local%20Temples%20Trip%201%20(Pitampura%2C%20Samalkot%2C%20Draksharamam%2C%20Kotipalli)." target="_blank" rel="noopener">Book</a>
+              </div>
+            </article>
+            <article class="package-card travel-card card reveal">
+              <div class="package-media travel-card-media">
+                <img src="assets/dwarapudi.jpg" alt="Kakinada local temples Trip 2 - Dwarapudi Temple">
+                <span class="package-duration">Local Tour · Trip 2</span>
+              </div>
+              <div class="package-body travel-card-body">
+                <h3>Kakinada Local Temples – Trip 2</h3>
+                <p class="package-location">Bikkavolu · Dwarapudi · G Mamidada · Shivapuram</p>
+                <ul class="feature-list">
+                  <li>Bikkavolu Vinayaka Temple</li>
+                  <li>Dwarapudi Temple darshan</li>
+                  <li>G Mamidada Temple visit</li>
+                  <li>108 Pillar Temple – Sri Satya Rama Tilak Ashramam, Shivapuram</li>
+                </ul>
+                <a class="btn package-book" href="https://wa.me/916304681176?text=Hello%20Srinivasa%20Car%20Travels%2C%20I%20want%20to%20book%20Kakinada%20Local%20Temples%20Trip%202%20(Bikkavolu%2C%20Dwarapudi%2C%20G%20Mamidada%2C%20Shivapuram%20108%20Pillar%20Temple)." target="_blank" rel="noopener">Book</a>
+              </div>
+            </article>
+            <article class="package-card travel-card card reveal">
+              <div class="package-media travel-card-media">
+                <img src="assets/ainavilli.jpg" alt="Kakinada local temples Trip 3 - Ainavilli Temple">
+                <span class="package-duration">Local Tour · Trip 3</span>
+              </div>
+              <div class="package-body travel-card-body">
+                <h3>Kakinada Local Temples – Trip 3</h3>
+                <p class="package-location">Ainavilli · Appannapalli · Antervedi</p>
+                <ul class="feature-list">
+                  <li>Ainavilli Sri Koteswara Swamy Temple</li>
+                  <li>Appannapalli Temple darshan</li>
+                  <li>Antervedi Pallipalem Temple &amp; sacred beach</li>
+                </ul>
+                <a class="btn package-book" href="https://wa.me/916304681176?text=Hello%20Srinivasa%20Car%20Travels%2C%20I%20want%20to%20book%20Kakinada%20Local%20Temples%20Trip%203%20(Ainavilli%2C%20Appannapalli%2C%20Antervedi%20Pallipalem)." target="_blank" rel="noopener">Book</a>
+              </div>
+            </article>
+          </div>
+        </div>
 
-          <!-- NEW: Lambasingi & Vanjangi -->
-          <article class="package-card card reveal">
-            <div class="package-media">
-              <img src="assets/lambasingi.jpg" alt="Kakinada to Lambasingi and Vanjangi package foggy view">
-              <span class="package-duration">1–2 Days</span>
-            </div>
-            <div class="package-body">
-              <h3>Kakinada to Lambasingi &amp; Vanjangi</h3>
-              <p class="package-location">Lambasingi &amp; Vanjangi, AP</p>
-              <ul class="feature-list">
-                <li>Fog valleys and sunrise viewpoints</li>
-                <li>Vanjangi sunrise trek experience</li>
-                <li>Best season: September – January</li>
-                <li>Sedan: Rs.7000 | Ertiga: Rs.8500</li>
-              </ul>
-              <a class="btn package-book" href="https://wa.me/916304681176?text=Hello%20Srinivasa%20Car%20Travels%2C%20I%20want%20to%20book%20Lambasingi%20and%20Vanjangi%20trip." target="_blank" rel="noopener">Book</a>
-            </div>
-          </article>
-
-          <!-- NEW: Kakinada Local Temples – Trip 1 -->
-          <article class="package-card card reveal">
-            <div class="package-media">
-              <img src="assets/draksharamam.jpg" alt="Kakinada local temples Trip 1 - Draksharamam Temple">
-              <span class="package-duration">Local Tour · Trip 1</span>
-            </div>
-            <div class="package-body">
-              <h3>Kakinada Local Temples – Trip 1</h3>
-              <p class="package-location">Pitampura · Samalkot · Draksharamam · Kotipalli</p>
-              <ul class="feature-list">
-                <li>Pitampura Temple darshan</li>
-                <li>Samalkot Sri Bhimeswara Swamy Temple</li>
-                <li>Draksharamam Bhimeswara Temple</li>
-                <li>Kotipalli Gautami Ghat &amp; Temple</li>
-              </ul>
-              <a class="btn package-book" href="https://wa.me/916304681176?text=Hello%20Srinivasa%20Car%20Travels%2C%20I%20want%20to%20book%20Kakinada%20Local%20Temples%20Trip%201%20(Pitampura%2C%20Samalkot%2C%20Draksharamam%2C%20Kotipalli)." target="_blank" rel="noopener">Book</a>
-            </div>
-          </article>
-
-          <!-- NEW: Kakinada Local Temples – Trip 2 -->
-          <article class="package-card card reveal">
-            <div class="package-media">
-              <img src="assets/dwarapudi.jpg" alt="Kakinada local temples Trip 2 - Dwarapudi Temple">
-              <span class="package-duration">Local Tour · Trip 2</span>
-            </div>
-            <div class="package-body">
-              <h3>Kakinada Local Temples – Trip 2</h3>
-              <p class="package-location">Bikkavolu · Dwarapudi · G Mamidada · Shivapuram</p>
-              <ul class="feature-list">
-                <li>Bikkavolu Sri Golingeswara Swamy Temple</li>
-                <li>Dwarapudi Temple darshan</li>
-                <li>G Mamidada Temple visit</li>
-                <li>108 Pillar Temple – Sri Satya Rama Tilak Ashramam, Shivapuram</li>
-              </ul>
-              <a class="btn package-book" href="https://wa.me/916304681176?text=Hello%20Srinivasa%20Car%20Travels%2C%20I%20want%20to%20book%20Kakinada%20Local%20Temples%20Trip%202%20(Bikkavolu%2C%20Dwarapudi%2C%20G%20Mamidada%2C%20Shivapuram%20108%20Pillar%20Temple)." target="_blank" rel="noopener">Book</a>
-            </div>
-          </article>
-
-          <!-- NEW: Kakinada Local Temples – Trip 3 -->
-          <article class="package-card card reveal">
-            <div class="package-media">
-              <img src="assets/ainavilli.jpg" alt="Kakinada local temples Trip 3 - Ainavilli Temple">
-              <span class="package-duration">Local Tour · Trip 3</span>
-            </div>
-            <div class="package-body">
-              <h3>Kakinada Local Temples – Trip 3</h3>
-              <p class="package-location">Ainavilli · Appannapalli · Antervedi</p>
-              <ul class="feature-list">
-                <li>Ainavilli Sri Koteswara Swamy Temple</li>
-                <li>Appannapalli Temple darshan</li>
-                <li>Antervedi Pallipalem Temple &amp; sacred beach</li>
-              </ul>
-              <a class="btn package-book" href="https://wa.me/916304681176?text=Hello%20Srinivasa%20Car%20Travels%2C%20I%20want%20to%20book%20Kakinada%20Local%20Temples%20Trip%203%20(Ainavilli%2C%20Appannapalli%2C%20Antervedi%20Pallipalem)." target="_blank" rel="noopener">Book</a>
-            </div>
-          </article>
-
+        <div class="package-category">
+          <div class="package-category-heading">
+            <h3 class="package-category-title">Holiday &amp; Sightseeing Packages</h3>
+            <p class="package-category-subtitle">Nature trips, city rides, and leisure travel</p>
+          </div>
+          <div class="package-grid">
+            <article class="package-card travel-card card reveal">
+              <div class="package-media travel-card-media">
+                <img src="assets/charminar.jpg" alt="Kakinada to Hyderabad route with Charminar visual">
+                <span class="package-duration">Pickup & Drop</span>
+              </div>
+              <div class="package-body travel-card-body">
+                <h3>Kakinada to Hyderabad</h3>
+                <p class="package-location">Hyderabad, Telangana</p>
+                <ul class="feature-list">
+                  <li>Sedan: Rs.10000</li>
+                  <li>Ertiga: Rs.12000</li>
+                  <li>Innova Crysta: Rs.16000</li>
+                </ul>
+                <a class="btn package-book" href="https://wa.me/916304681176?text=Hello%20Srinivasa%20Car%20Travels%2C%20I%20want%20to%20book%20Kakinada%20to%20Hyderabad." target="_blank" rel="noopener">Book</a>
+              </div>
+            </article>
+            <article class="package-card travel-card card reveal">
+              <div class="package-media travel-card-media">
+                <img src="assets/rajahmundry.jpg" alt="Kakinada to Rajahmundry package - Godavari visual">
+                <span class="package-duration">Pickup & Drop</span>
+              </div>
+              <div class="package-body travel-card-body">
+                <h3>Kakinada to Rajahmundry</h3>
+                <p class="package-location">Rajahmundry, Andhra Pradesh</p>
+                <ul class="feature-list">
+                  <li>Sedan: Rs.1500</li>
+                  <li>Ertiga: Rs.2200</li>
+                  <li>Innova Crysta: Rs.3500</li>
+                </ul>
+                <a class="btn package-book" href="https://wa.me/916304681176?text=Hello%20Srinivasa%20Car%20Travels%2C%20I%20want%20to%20book%20Kakinada%20to%20Rajahmundry." target="_blank" rel="noopener">Book</a>
+              </div>
+            </article>
+            <article class="package-card travel-card card reveal">
+              <div class="package-media travel-card-media">
+                <img src="assets/hampi-virupaksha.jpg" alt="Hampi and Virupaksha Temple package">
+                <span class="package-duration">2 Days / 1 Night</span>
+              </div>
+              <div class="package-body travel-card-body">
+                <h3>Hampi &amp; Virupaksha Temple</h3>
+                <p class="package-location">Hampi, Karnataka</p>
+                <ul class="feature-list">
+                  <li>UNESCO heritage temple visit</li>
+                  <li>Virupaksha Temple Darshan</li>
+                  <li>Historic ruins sightseeing</li>
+                </ul>
+                <a class="btn package-book" href="https://wa.me/916304681176?text=Hello%20Srinivasa%20Car%20Travels%2C%20I%20want%20to%20book%20Hampi%20and%20Virupaksha%20Temple%20package." target="_blank" rel="noopener">Book</a>
+              </div>
+            </article>
+            <article class="package-card travel-card card reveal">
+              <div class="package-media travel-card-media">
+                <img src="assets/araku.jpg" alt="Kakinada to Araku Valley package scenic view">
+                <span class="package-duration">1–2 Days</span>
+              </div>
+              <div class="package-body travel-card-body">
+                <h3>Kakinada to Araku Valley</h3>
+                <p class="package-location">Araku, Andhra Pradesh</p>
+                <ul class="feature-list">
+                  <li>Scenic tribal hill-station getaway</li>
+                  <li>Borra Caves &amp; coffee plantation visit</li>
+                </ul>
+                <a class="btn package-book" href="https://wa.me/916304681176?text=Hello%20Srinivasa%20Car%20Travels%2C%20I%20want%20to%20book%20Araku%20Valley%20package." target="_blank" rel="noopener">Book</a>
+              </div>
+            </article>
+            <article class="package-card travel-card card reveal">
+              <div class="package-media travel-card-media">
+                <img src="assets/lambasingi.jpg" alt="Kakinada to Lambasingi and Vanjangi package foggy view">
+                <span class="package-duration">1–2 Days</span>
+              </div>
+              <div class="package-body travel-card-body">
+                <h3>Kakinada to Lambasingi &amp; Vanjangi</h3>
+                <p class="package-location">Lambasingi &amp; Vanjangi, AP</p>
+                <ul class="feature-list">
+                  <li>Fog valleys and sunrise viewpoints</li>
+                  <li>Vanjangi sunrise trek experience</li>
+                  <li>Best season: September – January</li>
+                </ul>
+                <a class="btn package-book" href="https://wa.me/916304681176?text=Hello%20Srinivasa%20Car%20Travels%2C%20I%20want%20to%20book%20Lambasingi%20and%20Vanjangi%20trip." target="_blank" rel="noopener">Book</a>
+              </div>
+            </article>
+          </div>
         </div>
         <div class="package-price-grid">
           <article class="price-card card reveal"><h4>Sedan daily rental</h4><strong>Rs.1600</strong><p>Fuel at 1L / 10 km and tolls extra.</p></article>
@@ -1614,24 +1708,23 @@
         <article class="enquiry-panel card reveal">
           <span class="eyebrow">Enquiry</span>
           <h3>Send your travel details</h3>
-          <p>You can connect this form to WhatsApp, email, NestCRM, or any backend later. For now it works as a polished booking section on the page.</p>
-          <form>
+          <p>Share your filled details instantly on WhatsApp or send an email enquiry from this section.</p>
+          <form id="enquiry-form">
             <div class="form-grid">
-              <label>Name<input type="text" placeholder="Your full name"></label>
-              <label>Phone<input type="tel" placeholder="Your mobile number"></label>
+              <label>Name<input id="enquiry-name" name="name" type="text" placeholder="Your full name"></label>
+              <label>Phone<input id="enquiry-phone" name="phone" type="tel" placeholder="Your mobile number"></label>
             </div>
             <div class="form-grid">
-              <label>Pickup location<input type="text" placeholder="Pickup point"></label>
-              <label>Drop location<input type="text" placeholder="Drop point"></label>
+              <label>Pickup location<input id="enquiry-pickup" name="pickup" type="text" placeholder="Pickup point"></label>
+              <label>Drop location<input id="enquiry-drop" name="drop" type="text" placeholder="Drop point"></label>
             </div>
             <div class="form-grid">
-              <label>Travel date<input type="date"></label>
-              <label>Vehicle type<select><option>Select vehicle</option><option>Sedan</option><option>Ertiga</option><option>Innova Crysta</option><option>Tempo Traveller</option><option>Bus</option></select></label>
+              <label>Travel date<input id="enquiry-date" name="travelDate" type="date"></label>
+              <label>Vehicle type<select id="enquiry-vehicle" name="vehicle"><option value="">Select vehicle</option><option>Sedan</option><option>Ertiga</option><option>Innova Crysta</option><option>Tempo Traveller</option><option>Bus</option></select></label>
             </div>
-            <label>Message<textarea placeholder="Tell us your route, timing, package, or event travel requirement"></textarea></label>
+            <label>Message<textarea id="enquiry-message" name="message" placeholder="Tell us your route, timing, package, or event travel requirement"></textarea></label>
             <div class="form-actions">
-              <a class="btn btn-whatsapp" href="https://wa.me/916304681176?text=Hello%20Srinivasa%20Car%20Travels%2C%20I%20want%20to%20share%20my%20trip%20details." target="_blank" rel="noopener">Send on WhatsApp</a>
-              <a class="btn btn-primary" href="mailto:srinivascartravels1@gmail.com">Email Enquiry</a>
+              <a id="enquiry-whatsapp-btn" class="btn btn-whatsapp" href="https://wa.me/916304681176?text=Hello%20Srinivasa%20Car%20Travels%2C%20I%20want%20to%20share%20my%20trip%20details." target="_blank" rel="noopener">Send on WhatsApp</a>
             </div>
           </form>
         </article>
@@ -1682,6 +1775,39 @@
         setSlide(activeSlide);
       }, 4200);
     }
+
+    const enquiryForm = document.getElementById("enquiry-form");
+    const enquiryWhatsAppBtn = document.getElementById("enquiry-whatsapp-btn");
+
+    if (enquiryForm && enquiryWhatsAppBtn) {
+      const readValue = (id) => {
+        const field = document.getElementById(id);
+        const value = field && typeof field.value === "string" ? field.value.trim() : "";
+        return value || "Not provided";
+      };
+
+      enquiryWhatsAppBtn.addEventListener("click", (event) => {
+        event.preventDefault();
+
+        const enquiryMessage = [
+          "*Website Travel Enquiry*",
+          "",
+          `Customer Name: ${readValue("enquiry-name")}`,
+          `Phone: ${readValue("enquiry-phone")}`,
+          `Pickup location: ${readValue("enquiry-pickup")}`,
+          `Drop location: ${readValue("enquiry-drop")}`,
+          `Travel date: ${readValue("enquiry-date")}`,
+          `Vehicle type: ${readValue("enquiry-vehicle")}`,
+          `Message: ${readValue("enquiry-message")}`
+        ].join("\n");
+
+        const whatsappUrl = `https://wa.me/916304681176?text=${encodeURIComponent(enquiryMessage)}`;
+        window.open(whatsappUrl, "_blank", "noopener");
+      });
+    }
   </script>
 </body>
 </html>
+
+
+
