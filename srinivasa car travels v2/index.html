@@ -1051,7 +1051,16 @@
       .brand-mark { width: 56px; height: 56px; }
       .brand-text strong { font-size: 1rem; }
       .floating-whatsapp { padding: 0 1rem; }
-      .header-actions .btn-light { display: none; }
+      .header-actions {
+        width: 100%;
+        gap: 0.65rem;
+      }
+      .header-actions .btn {
+        flex: 1 1 0;
+        min-width: 0;
+        min-height: 46px;
+        padding: 0.85rem 1rem;
+      }
       .hero-copy h1 { font-size: clamp(3rem, 16vw, 4.8rem); }
       .hero-dots { right: 1rem; bottom: 1rem; }
       .fleet-grid, .route-grid, .testimonial-grid, .package-price-grid, .package-grid { grid-template-columns: 1fr; }
@@ -1127,6 +1136,7 @@
           <p class="reveal" style="font-size: 1.25rem; margin-bottom: 2rem; color: rgba(255,255,255,0.95);">Book comfortable rides from Kakinada to Vijayawada and beyond at affordable prices.</p>
           <div class="hero-actions reveal">
             <a class="btn btn-whatsapp" href="https://wa.me/916304681176?text=Hello%20Srinivasa%20Car%20Travels%2C%20I%20want%20to%20book%20a%20ride." target="_blank" rel="noopener">Book Now on WhatsApp</a>
+            <a class="btn btn-light" href="tel:+916304681176">Call Now</a>
             <a class="btn btn-secondary" href="#routes">View Pricing</a>
           </div>
           <div class="hero-trust-badges reveal">
@@ -1233,6 +1243,20 @@
           <p>Outstation, scenic, airport, and temple routes from Kakinada - all with transparent fares.</p>
         </div>
         <div class="route-grid">
+          <article class="route-card travel-card card reveal">
+            <div class="route-media travel-card-media">
+              <img src="assets/rajahmundry.jpg" alt="Kakinada to Rajahmundry route card - Godavari visual">
+              <div class="route-title"><div>Kakinada to Rajahmundry</div><span class="route-badge">Pickup &amp; Drop</span></div>
+            </div>
+            <div class="route-body travel-card-body">
+              <div class="route-meta"><span>Rajahmundry, Andhra Pradesh</span><span>City ride</span></div>
+              <div class="route-prices">
+                <div><span>Sedan</span><strong>Rs.1500</strong></div>
+                <div><span>Ertiga</span><strong>Rs.2200</strong></div>
+                <div><span>Innova Crysta</span><strong>Rs.3500</strong></div>
+              </div>
+            </div>
+          </article>
           <article class="route-card travel-card card reveal">
             <div class="route-media travel-card-media">
               <img src="assets/popular-routes-cars.jpg" alt="Kakinada to Vizag Airport route card">
